@@ -1,0 +1,5 @@
+controladores\ServletControladorProductoTest.class
+controladores\ServletControladorLoginTest.class
+controladores\ServletControladorProveedorTest.class
+controladores\ServletControladorClienteTest.class
+controladores\ServletControladorEmpleadoTest.class
