@@ -246,7 +246,8 @@ public class EmpleadoDaoJDBC {
             int idEmpleado = rs.getInt("id_empleado");
             String nombre = rs.getString("nombre");
             String apellido = rs.getString("apellido");
-            empleado = new Empleado(idEmpleado, nombre, apellido);
+            int idUsuario = rs.getInt("id_usuario");
+            empleado = new Empleado(idEmpleado, nombre, apellido, idUsuario);
             
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);

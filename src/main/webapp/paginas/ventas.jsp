@@ -10,35 +10,11 @@
 %>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
 
-<style>
-    .suggestion {
-        padding: 10px;
-        cursor: pointer;
-        border: 1px solid #ccc;
-        background: white;
-        position: relative;
-    }
-    .suggestion:hover {
-        background-color: #f0f0f0;
-    }
-    .suggestions-container {
-        border: 1px solid #ccc;
-        position: absolute;
-        background: white;
-        z-index: 1000;
-    }
-    .cantidad {
-        width: 50%;
-        display: block;
-        margin: 0 auto;
-        text-align: center;
-    }
-</style>
 
 <main>
     <div id="ventasContainer">
         <h1 id="titulo_form">Venta</h1>
-        <form action="${pageContext.request.contextPath}/ServletControladorVentas" method="post" id="form_consulta_cliente">
+        <form action="${pageContext.request.contextPath}/ServletControladorVentas" method="post" id="form_venta">
             <div class="header">
                     <!-- campos ocultos -->
                     <input type="hidden" name="page" value="ventas"/>

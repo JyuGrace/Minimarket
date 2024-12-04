@@ -1,6 +1,6 @@
 package controladores;
 
-import controladores.ServletControaldorProductos;
+import controladores.ServletControladorProductos;
 import static org.mockito.Mockito.*;
 
 import javax.servlet.RequestDispatcher;
@@ -18,7 +18,7 @@ import org.mockito.MockitoAnnotations;
 public class ServletControladorProductoTest {
 
     @InjectMocks
-    private ServletControaldorProductos productoServlet; //clase a probar (ServletProductos)
+    private ServletControladorProductos productoServlet; //clase a probar (ServletProductos)
 
     @Mock
     private HttpServletRequest request;

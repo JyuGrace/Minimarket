@@ -5,7 +5,7 @@
         <form action="${pageContext.request.contextPath}/ServletControladorProveedores" id="form_consulta_proveedor" method="get">
             <h1 id="titulo_form">Consultar Proveedor</h1>
             <div id="grupo_form_consulta">
-                <label for="Nombre">Nombre</label>
+                <label class="consulta_form_label" for="Nombre">Nombre</label>
                 <!-- parametros ocultos -->
                 <input type="hidden" name="page" value="consultarProveedor">
                 <input type="hidden" id="accionConsultar" name="accion">
@@ -38,8 +38,10 @@
                                 <td>${proveedores.telefono}</td>
                                 <td>${proveedores.email}</td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/ServletControladorProveedores?page=consultarProveedor&accion=editar&idProveedor=${proveedores.idProveedor}" onclick="">Editar</a>
-                                    |
+                                    <c:if test="${userType == 1}">
+                                        <a href="${pageContext.request.contextPath}/ServletControladorProveedores?page=consultarProveedor&accion=editar&idProveedor=${proveedores.idProveedor}" onclick="">Editar</a>
+                                        |
+                                    </c:if>
                                     <a href="${pageContext.request.contextPath}/ServletControladorProveedores?page=consultarProveedor&accion=seleccionarEliminar&idProveedor=${proveedores.idProveedor}" onclick="">Eliminar</a>
 
                                 </td>

@@ -1,6 +1,7 @@
 controladores\ServletControladorFacturas.class
 dominio\CategoriaProducto.class
 controladores\ServletControladorLogOut.class
+controladores\ServletControladorProductos.class
 dominio\Proveedor.class
 dominio\Empleado.class
 datos\DetalleFacturaDaoJDBC.class
@@ -21,7 +22,6 @@ controladores\ServletControladorEmpleados.class
 dominio\DetalleFactura.class
 dominio\Cliente.class
 datos\ProveedorDaoJDBC.class
-controladores\ServletControaldorProductos.class
 dominio\ConsultasFacturas.class
 test\test.class
 controladores\ServletControladorLogIn.class

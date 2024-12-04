@@ -20,11 +20,11 @@ function consultar(parametro){
 //onclick boton "Finalizar Venta"
 function vender(parametro){
     document.getElementById("accionVenta").value = parametro;
-    //devolvemos false si n ose han agregado productos a la lista
+    //devolvemos false si no se han agregado productos a la lista
     const idProductoVenta = document.getElementById("idProductoVenta");
     const nombreCliente = document.getElementById("nombreCliente").value;
     if(idProductoVenta && nombreCliente){
-        document.getElementById("form_consulta_cliente").submit();
+        document.getElementById("form_venta").submit();
     } else{
         alert("Verifique que se hayan agregado productos o Ingresado el cliente");
         return false;
@@ -37,12 +37,24 @@ function clienteVenta(accion){
     if (cedula) {
         $("#accionVenta").val(accion);
         // Enviar el formulario manualmente si la cédula está llena
-        $("#form_consulta_cliente").submit();
+        $("#form_venta").submit();
     } else {
-        alert("Por favor, ingrese la cédula del cliente.");
+        alert("Por favor, ingrese la cedula del cliente.");
         return false;
     }
 }
+
+// mostrar-ocultar container de NO stock
+// Función para mostrar/ocultar el div con la lista de productos
+function toggleDiv() {
+    var div = document.getElementById("listaProductos");
+    if (div.style.display === "none") {
+        div.style.display = "block";
+    } else {
+        div.style.display = "none";
+    }
+}
+
 
 
 

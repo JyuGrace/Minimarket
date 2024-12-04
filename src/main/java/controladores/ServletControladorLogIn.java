@@ -1,8 +1,11 @@
 package controladores;
 
 import datos.EmpleadoDaoJDBC;
+import datos.ProductoDaoJDBC;
 import dominio.Empleado;
+import dominio.Producto;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,12 +30,18 @@ public class ServletControladorLogIn extends HttpServlet{
         if (validar) {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", empleado);
+            session.setAttribute("userType", empleado.getTipoEmpleado());
+            
+            //cargamos los  productos que estan bajos o  con cero stock
+            List<Producto> productos = new ProductoDaoJDBC().listarProductosLowStock();
+            session.setAttribute("productosLowStock", productos);
+            
             response.sendRedirect("app.jsp");
             System.out.println("Loging in ");
         } else {
             // Credenciales incorrectas, redirigir a la página de login con mensaje de error
             request.setAttribute("error", "Credenciales Incorrectas");
-            response.sendRedirect("login.jsp");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
             
         }
     }

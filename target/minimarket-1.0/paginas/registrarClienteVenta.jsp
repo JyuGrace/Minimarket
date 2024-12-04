@@ -43,8 +43,8 @@
 
 
             <!-- Grupo: Correo Electronico -->
-            <div class="formulario__grupo" id="grupo__correo">
-                <label for="email" class="formulario__label">Correo Electrónico</label>
+            <div class="formulario__grupo" id="grupo__email">
+                <label for="email" class="formulario__label">Email</label>
                 <div class="formulario__grupo-input">
                     <input type="email" class="formulario__input" name="email" id="email" placeholder="correo@correo.com" />
                     <i class="formulario__validacion-estado fas fa-times-circle"></i>

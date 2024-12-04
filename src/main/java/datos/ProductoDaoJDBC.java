@@ -4,11 +4,15 @@ package datos;
 import dominio.Producto;
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class ProductoDaoJDBC {
     
     private static final String SQL_SELECT = "SELECT id_producto, nombre, stock, precio, descripcion, id_proveedor, id_categoria FROM minimarket.producto;";
+    private static final String SQL_SELECT_STOCK_AVAILABLE = "SELECT * FROM minimarket.producto WHERE stock > ?;";
+    private static final String SQL_SELECT_STOCK_LOW = "SELECT * FROM minimarket.producto WHERE stock < ?;";
     private static final String SQL_SELECT_BY_ID = "SELECT id_producto, nombre, stock, precio, descripcion, id_proveedor, id_categoria FROM minimarket.producto WHERE id_producto = ?;";
     private static final String SQL_SELECT_BY_NAME = "SELECT id_producto, nombre, stock, precio, descripcion, id_proveedor, id_categoria FROM minimarket.producto WHERE nombre = ?;";
     private static final String SQL_INSERT = "INSERT INTO minimarket.producto (nombre, stock, precio, descripcion, id_proveedor, id_categoria) VALUES (?,?,?,?,?,?);";
@@ -26,6 +30,74 @@ public class ProductoDaoJDBC {
         try {
             conn = Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_SELECT);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                int idProducto = rs.getInt("id_producto");
+                String nombre = rs.getString("nombre");
+                int stock = rs.getInt("stock");
+                double precio = rs.getDouble("precio");
+                String descripcion = rs.getString("descripcion");
+                int idProveedor = rs.getInt("id_proveedor");
+                int idCategoria = rs.getInt("id_categoria");
+                producto = new Producto(idProducto, nombre, stock, precio, descripcion, idProveedor, idCategoria);
+                productos.add(producto);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return productos;
+    }
+    
+    public List<Producto> listarStockDisponible(){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Producto producto = null;
+        List<Producto> productos = new ArrayList<>();
+        int stockParameter = 0;
+        
+        try {
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_SELECT_STOCK_AVAILABLE);
+            stmt.setInt(1, stockParameter);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                int idProducto = rs.getInt("id_producto");
+                String nombre = rs.getString("nombre");
+                int stock = rs.getInt("stock");
+                double precio = rs.getDouble("precio");
+                String descripcion = rs.getString("descripcion");
+                int idProveedor = rs.getInt("id_proveedor");
+                int idCategoria = rs.getInt("id_categoria");
+                producto = new Producto(idProducto, nombre, stock, precio, descripcion, idProveedor, idCategoria);
+                productos.add(producto);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return productos;
+    }
+    
+    public List<Producto> listarProductosLowStock(){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Producto producto = null;
+        List<Producto> productos = new ArrayList<>();
+        int stockParameter = 10;
+        
+        try {
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_SELECT_STOCK_LOW);
+            stmt.setInt(1, stockParameter);
             rs = stmt.executeQuery();
             while(rs.next()){
                 int idProducto = rs.getInt("id_producto");

@@ -6,11 +6,12 @@
 
 section {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     width: 100%;
-    background: url("../../recursos/images/login.jpg") no-repeat;
+    background: url("../../recursos/images/loginBg5.jpg") no-repeat;
     background-position: center;
     background-size: cover;
 }
@@ -22,16 +23,23 @@ section {
     background: transparent;
     border: none;
     border-radius: 20px;
-    backdrop-filter: blur(15px) brightness(80%);
+    backdrop-filter: blur(10px) brightness(70%);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-h2 {
+h2{
     font-size: 2em;
     color: #fff;
     text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
 }
 
 .inputbox {
@@ -135,3 +143,32 @@ button {
     }
 }
 
+.error-message {
+    color: red;
+    font-size: 18px;
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/*
+.container_1, .container_2{
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container_1{
+    width: 70%;
+    background: url("../../recursos/images/login.jpg") no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.container_2{
+    width: 30%;
+}
+
+*/

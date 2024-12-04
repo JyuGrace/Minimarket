@@ -7,7 +7,7 @@
             <form action="${pageContext.request.contextPath}/ServletControladorFacturas" id="form_consulta_producto" method="get">
             <h1 id="titulo_form">Consultar Facturas</h1>
             <div id="grupo_form_consulta">
-                <label for="nombre">Fecha:</label>
+                <label class="consulta_form_label" for="nombre">Fecha:</label>
                 <!-- parametros ocultos -->
                 <input type="hidden" name="page" value="consultarFactura">
                 <input type="hidden" id="accionConsultar" name="accion" >

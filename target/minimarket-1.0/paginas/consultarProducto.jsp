@@ -38,8 +38,10 @@
                                 <td><fmt:formatNumber value="${productos.precio}" type="currency"/></td>
                                 <td>${productos.descripcion}</td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/ServletControladorProductos?page=consultarProducto&accion=editar&idProducto=${productos.idProducto}" onclick="">Editar</a>
-                                    |
+                                    <c:if test="${userType == 1}">
+                                        <a href="${pageContext.request.contextPath}/ServletControladorProductos?page=consultarProducto&accion=editar&idProducto=${productos.idProducto}" onclick="">Editar</a>
+                                        |
+                                    </c:if>
                                     <a href="${pageContext.request.contextPath}/ServletControladorProductos?page=consultarProducto&accion=seleccionarEliminar&idProducto=${productos.idProducto}" onclick="">Eliminar</a>
                                 </td>
                             </tr>
@@ -95,7 +97,7 @@
                     <!-- Grupo: idProveedor (sin este campo el metodo actualizar falla) -->
                     <input type="hidden" name="idProveedor" value="${productoEditar.idProveedor}"/>
 
-                    <label for="nombre" class="formulario__label">Nombre</label>
+                    <label class="consulta_form_label" for="nombre" class="formulario__label">Nombre</label>
                     <div class="formulario__grupo-input">
                         <input
                             type="text"

@@ -157,13 +157,14 @@ const validarPassword2 = () => {
 };
 
 // Ejecutar la validación para todos los campos cuando el DOM esté completamente cargado.
-function validateCamposOnLoad(){
-document.addEventListener("DOMContentLoaded", () => {
-    inputs.forEach((input) => {
-        validarFormulario({ target: input });
+function validateCamposOnLoad() {
+    document.addEventListener("DOMContentLoaded", () => {
+        inputs.forEach((input) => {
+            validarFormulario({target: input});
+        });
     });
-});
-};
+}
+;
 validateCamposOnLoad();
 inputs.forEach((input) => {
     input.addEventListener("keyup", validarFormulario);
@@ -176,7 +177,7 @@ function validate() {
 
     // Itera sobre cada input y valida
     inputs.forEach((input) => {
-        validarFormulario({ target: input });
+        validarFormulario({target: input});
     });
 }
 
@@ -214,7 +215,7 @@ function formNotValid() {
 ;
 
 
-//EMPEZAMOS LA PRUEBA DE 
+
 formulario.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -227,13 +228,13 @@ formulario.addEventListener("submit", (e) => {
                     campos.email &&
                     campos.telefono &&
                     campos.direccion;
-            
+
             if (valRegClient) {
                 formValid();
                 formulario.submit();
             } else {
                 formNotValid();
-                alert(page);
+                alert("no se valido el formulario");
             }
             break;
         case "registrarProducto":
@@ -352,8 +353,25 @@ formulario.addEventListener("submit", (e) => {
                 alert("no se valido el formulario");
             }
             break;
+        case "ventas":
+            let valRegClienteVenta =
+                    campos.nombre &&
+                    campos.apellido &&
+                    campos.cedula &&
+                    campos.email &&
+                    campos.telefono &&
+                    campos.direccion;
+
+            if (valRegClienteVenta) {
+                formValid();
+                formulario.submit();
+            } else {
+                formNotValid();
+                alert("no se valido el formulario");
+            }
+            break;
         default:
-            
+
             break;
     }
 });

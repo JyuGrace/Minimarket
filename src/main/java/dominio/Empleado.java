@@ -34,10 +34,11 @@ public class Empleado {
         this.apellido = apellido;
     }
 
-    public Empleado(int idEmpleado, String nombre, String apellido) {
+    public Empleado(int idEmpleado, String nombre, String apellido, int tipoEmpleado) {
         this.idEmpleado = idEmpleado;
         this.nombre = nombre;
         this.apellido = apellido;
+        this.tipoEmpleado = tipoEmpleado;
     }
 
     public Empleado(String nombre, String apellido, String cedula, String usuario, String password, String email, String telefono, String direccion, Date fechaRegistro, int tipoEmpleado) {

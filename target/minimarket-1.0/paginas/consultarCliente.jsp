@@ -5,7 +5,7 @@
         <form action="${pageContext.request.contextPath}/ServletControladorClientes" id="form_consulta_cliente" method="get">
             <h1 id="titulo_form">Consultar Cliente</h1>
             <div id="grupo_form_consulta">
-                <label for="cedula">Cedula</label>
+                <label class="consulta_form_label" for="cedula">Cedula</label>
                 <!-- parametros ocultos -->
                 <input type="hidden" name="page" value="consultarCliente">
                 <input type="hidden" id="accionConsultar" name="accion">
@@ -40,8 +40,11 @@
                                 <td>${clientes.telefono}</td>
                                 <td>${clientes.email}</td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/ServletControladorClientes?page=consultarCliente&accion=editar&idCliente=${clientes.idCliente}" onclick="validate()">Editar</a>
-                                    |
+                                    <c:if test="${userType == 1}">
+                                        <a href="${pageContext.request.contextPath}/ServletControladorClientes?page=consultarCliente&accion=editar&idCliente=${clientes.idCliente}" onclick="validate()">Editar</a>
+                                        |
+                                    </c:if>
+
                                     <a href="${pageContext.request.contextPath}/ServletControladorClientes?page=consultarCliente&accion=seleccionarEliminar&idCliente=${clientes.idCliente}" onclick="">Eliminar</a>
 
                                 </td>
@@ -187,7 +190,7 @@
                         <i class="formulario__validacion-estado fas fa-times-circle"></i>
                     </div>
                     <p class="formulario__input-error">
-                        El telefono solo puede contener numeros y el maximo son 10 d�gitos.
+                        El telefono solo puede contener numeros y el maximo son 10 digitos.
                     </p>
                 </div>
 

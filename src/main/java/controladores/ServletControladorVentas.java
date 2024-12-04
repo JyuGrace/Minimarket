@@ -1,7 +1,6 @@
 package controladores;
 
 import datos.ClienteDaoJDBC;
-import datos.Conexion;
 import datos.DetalleFacturaDaoJDBC;
 import datos.FacturaDaoJDBC;
 import datos.ProductoDaoJDBC;
@@ -12,7 +11,6 @@ import dominio.Factura;
 import dominio.ImprimirFactura;
 import dominio.Producto;
 import java.io.IOException;
-import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -44,6 +42,7 @@ public class ServletControladorVentas extends HttpServlet {
                     break;
                 case "vender":
                     this.finalizarVenta(request, response);
+                    this.actualizarProductosConLowStock(request, response);
                     break;
                 default:
                     this.accionDefault(request, response);
@@ -66,8 +65,9 @@ public class ServletControladorVentas extends HttpServlet {
             sesion.setAttribute("clienteVenta", null);
             sesion.setAttribute("mensaje", "Cliente no encontrado");
         }
-
-        request.getRequestDispatcher("app.jsp").forward(request, response);
+        
+        response.sendRedirect(request.getContextPath() + "/ServletControladorVentas?page=ventas");
+        //request.getRequestDispatcher("app.jsp").forward(request, response);
     }
 
     private void registrarCliente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -91,12 +91,14 @@ public class ServletControladorVentas extends HttpServlet {
         } else {
             sesion.setAttribute("mensaje", "Error al registrar cliente");
         }
+        
         sesion.setAttribute("clienteVenta", ClienteFindByCedula);
-        request.getRequestDispatcher("app.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/ServletControladorVentas?page=ventas");
+        //request.getRequestDispatcher("app.jsp").forward(request, response);
     }
 
     private void accionDefault(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Producto> productos = new ProductoDaoJDBC().listar();
+        List<Producto> productos = new ProductoDaoJDBC().listarStockDisponible();
         List<Cliente> clientes = new ClienteDaoJDBC().listar();
         HttpSession sesion = request.getSession(false);
         //remuevo la variable mensaje para que no dispare el alert
@@ -124,7 +126,7 @@ public class ServletControladorVentas extends HttpServlet {
         //recibimos los parametros del modulo venta
         Cliente clienteVenta = (Cliente) sesion.getAttribute("clienteVenta");
         Empleado empleadoVenta = (Empleado) sesion.getAttribute("usuario");
-        java.sql.Date fechaFactura = fechaVentaSQL(request);
+        java.sql.Date fechaVenta = fechaVentaSQL(request);
         String productosId[] = request.getParameterValues("idProducto");
         String precios[] = request.getParameterValues("precio_unitario");
         String subtotales[] = request.getParameterValues("subtotal");
@@ -134,7 +136,7 @@ public class ServletControladorVentas extends HttpServlet {
         //creamos instancia de objeto Factura
         int idCliente = clienteVenta.getIdCliente();
         int idEmpleado = empleadoVenta.getIdEmpleado();
-        Factura factura = new Factura(fechaFactura, total, idCliente, idEmpleado);
+        Factura factura = new Factura(fechaVenta, total, idCliente, idEmpleado);
         //insertamos factura en la DB y recuperamos el ultimo ID insertado
         int lastInsertedId = new FacturaDaoJDBC().insertar(factura);
         
@@ -158,6 +160,12 @@ public class ServletControladorVentas extends HttpServlet {
             Producto buscarProductoById = new ProductoDaoJDBC().encontrarById(producto);
             String nombreProducto = buscarProductoById.getNombre();
             
+            //actualizamos el stock de productos despues de la venta
+            int nuevoStock = buscarProductoById.getStock() - cantidad;
+            System.out.println("nuevoStock = " + nuevoStock);
+            buscarProductoById.setStock(nuevoStock);
+            int stockActualizado = new ProductoDaoJDBC().actualizar(buscarProductoById);//se actualzia el stock en la db
+            
             //creamos objeto imprimirFactura y añadimos a la lista
             ImprimirFactura imprimirFactura = new ImprimirFactura(nombreProducto, cantidad, precioUnitario, subtotal);
             imprimirFacturas.add(imprimirFactura);
@@ -166,14 +174,14 @@ public class ServletControladorVentas extends HttpServlet {
             DetalleFactura detalleFactura = new DetalleFactura(cantidad, precioUnitario, ivaFloat, subtotal, lastInsertedId, idProducto);
             int detalleFacturaInsertados = new DetalleFacturaDaoJDBC().insertar(detalleFactura);
             counterRegistrosInsertados += detalleFacturaInsertados;
-            
         }
+        
         //creamos variable boolean para habilitar redirect en ventas.jsp a factura.jsp
         boolean generarFactura = counterRegistrosInsertados > 0;
         //guardamos las variables en la sesion para poder llenar la factura
         sesion.setAttribute("ivaValor", ivaValor);
         sesion.setAttribute("imprimirFacturas", imprimirFacturas);
-        sesion.setAttribute("fechaFactura", fechaFactura);
+        sesion.setAttribute("fechaVenta", fechaVenta);
         sesion.setAttribute("totalVenta", total);
         sesion.setAttribute("facturaId", lastInsertedId);
         sesion.setAttribute("generarFactura", generarFactura);
@@ -199,6 +207,16 @@ public class ServletControladorVentas extends HttpServlet {
             System.out.println("Error al parsear la fecha Venta");
         }
         return fechaVentaSql;
+    }
+    
+    private List<Producto> actualizarProductosConLowStock(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        HttpSession sesion = request.getSession(false);
+        sesion.removeAttribute("productosLowStock");
+        //consultamos lal ista de productos
+        List<Producto> productos = new ProductoDaoJDBC().listarProductosLowStock();
+        sesion.setAttribute("productosLowStock", productos);
+        request.getRequestDispatcher("app.jsp").forward(request, response);
+        return productos;
     }
 
 }

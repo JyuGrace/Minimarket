@@ -7,7 +7,7 @@
             <form action="${pageContext.request.contextPath}/ServletControladorEmpleados" id="form_consulta_empleado" method="get">
             <h1 id="titulo_form">Consultar Empleados</h1>
             <div id="grupo_form_consulta">
-                <label for="nombre"><span style="font-weight: bold">Nombre</span></label>
+                <label class="consulta_form_label" for="nombre">Nombre</label>
                 <!-- parametros ocultos -->
                 <input type="hidden" name="page" value="consultarEmpleado">
                 <input type="hidden" id="accionConsultar" name="accion" >
@@ -46,8 +46,10 @@
                                 <td>${empleados.tipoEmpleado}</td>
                                 <td>${empleados.fechaRegistro}</td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/ServletControladorEmpleados?page=consultarEmpleado&accion=seleccionarEditar&idEmpleado=${empleados.idEmpleado}" onclick="">Editar</a>
-                                    |
+                                    <c:if test="${userType == 1}">
+                                        <a href="${pageContext.request.contextPath}/ServletControladorEmpleados?page=consultarEmpleado&accion=seleccionarEditar&idEmpleado=${empleados.idEmpleado}" onclick="">Editar</a>
+                                        |
+                                    </c:if>
                                     <a href="${pageContext.request.contextPath}/ServletControladorEmpleados?page=consultarEmpleado&accion=seleccionarEliminar&idEmpleado=${empleados.idEmpleado}" onclick="">Eliminar</a>
                                 </td>
                             </tr>
@@ -183,6 +185,17 @@
                     <p class="formulario__input-error">La contraseña tiene que ser de 4 a 12 dígitos.</p>
                 </div>
 
+                <div class="formulario__grupo" id="grupo__password2">
+                    <label for="password2" class="formulario__label">Repetir Contraseña</label>
+                    <div class="formulario__grupo-input">
+                        <input type="password" class="formulario__input" name="password2" id="password2" value="${empleadoEditar.password}"/>
+                        <i class="formulario__validacion-estado fas fa-times-circle"></i>
+                    </div>
+                    <p class="formulario__input-error">
+                        Ambas contraseñas deben ser iguales.
+                    </p>
+                </div>
+
                 <!-- Grupo: tipoEmpleado -->
                 <div class="formulario__grupo" id="grupo__tipoEmpleado">
                     <label for="tipoEmpleado" class="formulario__label">Tipo de Empleado</label>
@@ -199,10 +212,10 @@
 
                 <!-- Grupo: email -->
                 <div class="formulario__grupo" id="grupo__email">
-                    <label for="usuario" class="formulario__label">Email</label>
+                    <label for="email" class="formulario__label">Email</label>
                     <div class="formulario__grupo-input">
                         <input
-                            type="text"
+                            type="email"
                             class="formulario__input"
                             name="email"
                             id="email"
